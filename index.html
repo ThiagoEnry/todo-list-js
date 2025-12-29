@@ -1,23 +1,19 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>To-Do List</title>
-  <link rel="stylesheet" href="style.css">
-</head>
 <body>
-
-  <div class="container">
+  <main class="app">
     <h1>To-Do List</h1>
 
-    <div class="input-group">
-      <input type="text" id="taskInput" placeholder="Add a new task">
-      <button id="addTaskBtn">Add</button>
-    </div>
+    <form id="task-form" class="input-group">
+      <input 
+        type="text" 
+        id="taskInput" 
+        placeholder="Add a new task"
+        autocomplete="off"
+      />
+      <button type="submit">Add</button>
+    </form>
 
-    <ul id="taskList"></ul>
-  </div>
+    <ul id="taskList" class="task-list"></ul>
+  </main>
 
   <script src="script.js"></script>
 </body>
-</html>
