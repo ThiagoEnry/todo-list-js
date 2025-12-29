@@ -1,60 +1,37 @@
-const taskInput = document.getElementById("taskInput");
-const addTaskBtn = document.getElementById("addTaskBtn");
+const form = document.getElementById("task-form");
+const input = document.getElementById("taskInput");
 const taskList = document.getElementById("taskList");
 
-let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+form.addEventListener("submit", function (e) {
+  e.preventDefault();
 
-function saveTasks() {
-  localStorage.setItem("tasks", JSON.stringify(tasks));
-}
+  const taskText = input.value.trim();
+  if (taskText === "") return;
 
-function renderTasks() {
-  taskList.innerHTML = "";
+  addTask(taskText);
+  input.value = "";
+});
 
-  tasks.forEach((task, index) => {
-    const li = document.createElement("li");
-    if (task.completed) li.classList.add("completed");
+function addTask(text) {
+  const li = document.createElement("li");
+  li.className = "task-item";
 
-    const span = document.createElement("span");
-    span.textContent = task.text;
+  const span = document.createElement("span");
+  span.textContent = text;
 
-    const checkbox = document.createElement("input");
-    checkbox.type = "checkbox";
-    checkbox.checked = task.completed;
-    checkbox.addEventListener("change", () => {
-      tasks[index].completed = checkbox.checked;
-      saveTasks();
-      renderTasks();
-    });
-
-    const deleteBtn = document.createElement("button");
-    deleteBtn.textContent = "X";
-    deleteBtn.addEventListener("click", () => {
-      tasks.splice(index, 1);
-      saveTasks();
-      renderTasks();
-    });
-
-    li.appendChild(checkbox);
-    li.appendChild(span);
-    li.appendChild(deleteBtn);
-
-    taskList.appendChild(li);
+  span.addEventListener("click", () => {
+    li.classList.toggle("completed");
   });
+
+  const removeBtn = document.createElement("button");
+  removeBtn.textContent = "X";
+  removeBtn.className = "remove-btn";
+
+  removeBtn.addEventListener("click", () => {
+    li.remove();
+  });
+
+  li.appendChild(span);
+  li.appendChild(removeBtn);
+  taskList.appendChild(li);
 }
-
-addTaskBtn.addEventListener("click", () => {
-  const text = taskInput.value.trim();
-  if (text === "") return;
-
-  tasks.push({ text, completed: false });
-  taskInput.value = "";
-  saveTasks();
-  renderTasks();
-});
-
-taskInput.addEventListener("keypress", (e) => {
-  if (e.key === "Enter") addTaskBtn.click();
-});
-
-renderTasks();
